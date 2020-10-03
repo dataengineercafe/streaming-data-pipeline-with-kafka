@@ -12,3 +12,7 @@ class TweetAdmin(admin.ModelAdmin):
         'created',
         'modified',
     )
+    list_filter = (
+        'search_term',
+        'sentiment',
+    )

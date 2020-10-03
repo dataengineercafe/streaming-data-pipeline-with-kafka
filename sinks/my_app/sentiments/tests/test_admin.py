@@ -18,3 +18,10 @@ class TestTweetAdmin(TestCase):
             'modified',
         )
         self.assertEqual(TweetAdmin.list_display, expected)
+
+    def test_admin_should_set_list_filter(self):
+        expected = (
+            'search_term',
+            'sentiment',
+        )
+        self.assertEqual(TweetAdmin.list_filter, expected)
