@@ -20,9 +20,9 @@ class TestTweet(TestCase):
         self.assertIsNotNone(tweet.modified)
 
     def test_sentiment_field_should_set_choices(self):
-        expected_choices = (
+        expected = (
             ('positive', 'Positive'),
             ('neutral', 'Neutral'),
             ('negative', 'Negative'),
         )
-        self.assertEqual(Tweet.sentiment.field.choices, expected_choices)
+        self.assertEqual(Tweet.sentiment.field.choices, expected)
