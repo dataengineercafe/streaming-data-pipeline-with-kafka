@@ -14,6 +14,13 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 django.setup()
 
 
+from confluent_kafka import Consumer
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+
+from words.models import Word
+
+
 # Credit: https://www.earthdatascience.org/courses/use-data-open-source-python/intro-to-apis/calculate-tweet-word-frequencies-in-python/
 def remove_url(txt):
     """Replace URLs found in a text string with nothing
@@ -32,11 +39,9 @@ def remove_url(txt):
     return " ".join(re.sub("([^0-9A-Za-z \t])|(\w+:\/\/\S+)", "", txt).split())
 
 
-from confluent_kafka import Consumer
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
-
-from words.models import Word
+def remove_specific_words(words):
+    specific_words = ['rt', 'python',]
+    return [w for w in words if not w in specific_words]
 
 
 topics = ['test-topic',]
@@ -60,7 +65,7 @@ while True:
 
     word_tokens = set(remove_url(text).lower().split())
     stop_words = set(stopwords.words('english'))
-    filtered_words = [w for w in word_tokens if not w in stop_words]
+    filtered_words = remove_specific_words([w for w in word_tokens if not w in stop_words])
     for each in filtered_words:
         try:
             w = Word.objects.get(text=each)
