@@ -21,3 +21,9 @@ class TestWordAdmin(TestCase):
             '-count',
         )
         self.assertEqual(WordAdmin.ordering, expected)
+
+    def test_admin_should_set_search_fields(self):
+        expected = (
+            'text',
+        )
+        self.assertEqual(WordAdmin.search_fields, expected)

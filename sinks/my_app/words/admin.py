@@ -9,6 +9,9 @@ class WordAdmin(admin.ModelAdmin):
         'text',
         'count',
     )
+    search_fields = (
+        'text',
+    )
     ordering = (
         '-count',
     )
