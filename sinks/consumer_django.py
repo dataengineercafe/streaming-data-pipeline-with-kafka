@@ -39,9 +39,14 @@ def remove_url(txt):
     return " ".join(re.sub("([^0-9A-Za-z \t])|(\w+:\/\/\S+)", "", txt).split())
 
 
-def remove_specific_words(words):
+def remove_stop_words(word_tokens):
+    stop_words = set(stopwords.words('english'))
+    return [w for w in word_tokens if not w in stop_words]
+
+
+def remove_specific_words(word_tokens):
     specific_words = ['rt', 'python',]
-    return [w for w in words if not w in specific_words]
+    return [w for w in word_tokens if not w in specific_words]
 
 
 topics = ['test-topic',]
@@ -64,8 +69,7 @@ while True:
     print(text)
 
     word_tokens = set(remove_url(text).lower().split())
-    stop_words = set(stopwords.words('english'))
-    filtered_words = remove_specific_words([w for w in word_tokens if not w in stop_words])
+    filtered_words = remove_specific_words(remove_stop_words(word_tokens))
     for each in filtered_words:
         try:
             w = Word.objects.get(text=each)
