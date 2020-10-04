@@ -9,7 +9,7 @@ topics = ['test-topic',]
 c = Consumer({
     'bootstrap.servers': 'localhost:9092',
     'group.id': 'mygroup',
-    'auto.offset.reset': 'earliest'
+    'auto.offset.reset': 'earliest',
 })
 
 c.subscribe(topics)

@@ -1,17 +1,9 @@
+import json
 import os
+import re
 import sys
 
 import django
-
-# from confluent_kafka import Consumer
-#
-#
-# c = Consumer({
-#     'bootstrap.servers': 'localhost:9092',
-#     'group.id': 'mygroup',
-# })
-#
-# c.subscribe(['mytopic'])
 
 # Add the project to sys.path, so that Python can find packages
 PROJECT_ROOT = os.path.join(os.path.dirname(__file__), 'my_app')
@@ -22,26 +14,62 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 django.setup()
 
 
+# Credit: https://www.earthdatascience.org/courses/use-data-open-source-python/intro-to-apis/calculate-tweet-word-frequencies-in-python/
+def remove_url(txt):
+    """Replace URLs found in a text string with nothing
+    (i.e. it will remove the URL from the string).
+
+    Parameters
+    ----------
+    txt : string
+        A text string that you want to parse and remove urls.
+
+    Returns
+    -------
+    The same txt string with url's removed.
+    """
+
+    return " ".join(re.sub("([^0-9A-Za-z \t])|(\w+:\/\/\S+)", "", txt).split())
+
+
+from confluent_kafka import Consumer
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+
 from words.models import Word
 
 
-# while True:
-#     msg = c.poll(1.0)
-#     if msg is None:
-#         continue
+topics = ['test-topic',]
 
-    # print(f'Received message: {msg.value().decode("utf-8")}')
+c = Consumer({
+    'bootstrap.servers': 'localhost:9092',
+    'group.id': 'mygroup',
+    'auto.offset.reset': 'earliest',
+})
 
-text = 'song'
+c.subscribe(topics)
 
-try:
-    w = Word.objects.get(text=text)
-    w.count = w.count + 1
-    w.save()
-except Word.DoesNotExist:
-    Word.objects.create(text=text, count=1)
+while True:
+    msg = c.poll(1.0)
+    if msg is None:
+        continue
 
-total_words = Word.objects.count()
-print('Total words:', total_words)
+    data = json.loads(msg.value().decode('utf-8'))
+    text = data['text']
+    print(text)
 
-# c.close()
+    word_tokens = set(remove_url(text).lower().split())
+    stop_words = set(stopwords.words('english'))
+    filtered_words = [w for w in word_tokens if not w in stop_words]
+    for each in filtered_words:
+        try:
+            w = Word.objects.get(text=each)
+            w.count = w.count + 1
+            w.save()
+        except Word.DoesNotExist:
+            Word.objects.create(text=each, count=1)
+
+    # total_words = Word.objects.count()
+    # print('Total words:', total_words)
+
+c.close()
