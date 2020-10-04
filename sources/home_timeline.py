@@ -13,7 +13,8 @@ auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
 
 api = tweepy.API(auth)
 
+# Returns the 20 most recent statuses
 public_tweets = api.home_timeline()
 for tweet in public_tweets:
-    # print(tweet.text)
-    print(tweet)
+    print(tweet.text)
+    print('---')
