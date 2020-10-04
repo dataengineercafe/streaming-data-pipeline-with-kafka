@@ -25,3 +25,9 @@ class TestTweetAdmin(TestCase):
             'sentiment',
         )
         self.assertEqual(TweetAdmin.list_filter, expected)
+
+    def test_admin_should_set_search_fields(self):
+        expected = (
+            'text',
+        )
+        self.assertEqual(TweetAdmin.search_fields, expected)

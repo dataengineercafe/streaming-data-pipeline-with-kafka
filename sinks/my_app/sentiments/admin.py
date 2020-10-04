@@ -16,3 +16,6 @@ class TweetAdmin(admin.ModelAdmin):
         'search_term',
         'sentiment',
     )
+    search_fields = (
+        'text',
+    )
