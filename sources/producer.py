@@ -1,3 +1,4 @@
+import json
 import os
 
 import tweepy
@@ -11,6 +12,8 @@ ACCESS_TOKEN_SECRET = os.environ.get('ACCESS_TOKEN_SECRET')
 
 
 topic = 'test-topic'
+
+# Doc: docs.confluent.io/current/clients/confluent-kafka-python/
 p = Producer({
     'bootstrap.servers': 'localhost:9092'
 })
@@ -20,9 +23,9 @@ track = ['python',]
 
 class MyStreamListener(tweepy.StreamListener):
     def on_status(self, status):
-        # print(status)
-        print(status.text)
-        p.produce(topic, status.text)
+        print(status._json)
+        print('---')
+        p.produce(topic, json.dumps(status._json))
         p.flush()
 
 
