@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "kafkajs": "^1.14.0"
+    "kafkajs": "^1.15.0"
   },
   "devDependencies": {},
   "scripts": {
