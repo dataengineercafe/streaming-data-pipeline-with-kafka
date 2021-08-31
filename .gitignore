@@ -130,3 +130,6 @@ dmypy.json
 
 # Vim
 *.swp
+
+# Kafka Downloads
+kafka_2*
