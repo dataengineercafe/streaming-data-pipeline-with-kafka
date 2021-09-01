@@ -1,0 +1,24 @@
+{
+  "name": "twitty",
+  "version": "1.0.0",
+  "description": "Twitty",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dataength/streaming-data-pipeline-with-kafka.git"
+  },
+  "author": "",
+  "license": "CC0",
+  "bugs": {
+    "url": "https://github.com/dataength/streaming-data-pipeline-with-kafka/issues"
+  },
+  "homepage": "https://github.com/dataength/streaming-data-pipeline-with-kafka#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "kafkajs": "^1.15.0",
+    "socket.io": "^4.2.0"
+  }
+}
