@@ -1,2 +1,3 @@
-# hello-socket.io
-Hello, Socket.IO
+# Twitty
+
+Real-time message monitoring
