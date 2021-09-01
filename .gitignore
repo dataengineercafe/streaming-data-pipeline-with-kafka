@@ -133,3 +133,9 @@ dmypy.json
 
 # Kafka Downloads
 kafka_2*
+
+# Node
+node_modules
+
+# Mac
+.DS_Store
